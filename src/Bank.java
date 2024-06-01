@@ -8,7 +8,7 @@ public class Bank {
     public Bank() {
         this.ban = false;
         this.accounts = new ArrayList<>();
-        this.moneyBank = 0;
+        this.moneyBank = 10000000;
     }
 
     public double getMoneyBank() {
@@ -78,10 +78,12 @@ public class Bank {
 
     public void changeCredit(BankAccount account, double credit) {
         account.setCredit(credit);
+        setMoneyBank(getMoneyBank() - credit);
         System.out.println("Bank changed a credit of " + credit + "$ to user: " + account.getUser());
     }
 
     public void removeCredit(BankAccount account) {
+        setMoneyBank(getMoneyBank() + account.getCredit());
         account.setCredit(0);
         System.out.println("Bank removed credit from user: " + account.getUser());
     }
@@ -116,6 +118,7 @@ public class Bank {
 
     public void addBonus(BankAccount account, int bonus) {
         account.setMoney(account.getMoney() + bonus);
+        setMoneyBank(getMoneyBank() - bonus);
         System.out.println("Bank added " + bonus + "$ to user: " + account.getUser());
     }
 
@@ -124,6 +127,7 @@ public class Bank {
     }
 
     public void closeDeposit(BankAccount account) {
+        setMoneyBank(getMoneyBank() - account.getDepositBalance());
         account.setMoney((int) (account.getMoney() + account.getDepositBalance()));
         account.setDepositBalance(0);
         System.out.println("Bank close deposit from user: " + account.getUser());
@@ -138,6 +142,7 @@ public class Bank {
         if (account.getDepositBalance() > 0) {
             double procent = 0.08;
             double setProcent = account.getDepositBalance() * procent;
+            setMoneyBank(getMoneyBank() - setProcent);
             account.setDepositBalance(account.getDepositBalance() + setProcent);
             account.addTransaction("Bank add 8% on deposit money", (int) setProcent);
             System.out.println(account.getUser() + " bank added 8% to his deposit");
@@ -150,6 +155,7 @@ public class Bank {
         if (account.getDepositBalance() > 0) {
             double procent = 0.05;
             double setProcent = account.getDepositBalance() * procent;
+            setMoneyBank(getMoneyBank() - setProcent);
             account.setDepositBalance(account.getDepositBalance() + setProcent);
             account.addTransaction("Bank add 5% on deposit money", (int) setProcent);
             System.out.println(account.getUser() + " bank added 5% to his deposit");
@@ -162,6 +168,7 @@ public class Bank {
         if (account.getDepositBalance() > 0) {
             double procent = 0.10;
             double setProcent = account.getDepositBalance() * procent;
+            setMoneyBank(getMoneyBank() - setProcent);
             account.setDepositBalance(account.getDepositBalance() + setProcent);
             account.addTransaction("Bank add 10% on deposit money", (int) setProcent);
             System.out.println(account.getUser() + " bank added 10% to his deposit");
@@ -169,5 +176,12 @@ public class Bank {
             System.out.println(account.getUser() + " you don't have deposit");
         }
     }
+    public void everyMonthProcentForRemainder (BankAccount account){
+        double procent = 0.01;
+        double setProcent = account.getMoney() * procent;
+        setMoneyBank(getMoneyBank() - setProcent);
+        account.setMoney((int) (account.getMoney() + setProcent));
+        System.out.println("Enter procent " + account.getUser() + " at the rate of " + (int) setProcent + "$");
+        account.addTransaction("monthlyProcent", (int) setProcent);    }
 
 }

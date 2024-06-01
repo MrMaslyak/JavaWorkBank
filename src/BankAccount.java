@@ -110,8 +110,8 @@ public class BankAccount {
     }
 
     public void withdrawMoney(int money, Bank bank) {
-        if (money > 0 && money <= this.getMoney()) {
-            double commission = money * 0.03;
+        double commission = money * 0.03;
+        if (money > 0 && money + commission <= this.getMoney()) {
             this.setMoney(this.getMoney() - money - (int) commission);
             bank.setMoneyBank(bank.getMoneyBank() + commission);
             System.out.println(this.getUser() + " you withdrew " + money + "$ from your account");
@@ -128,8 +128,8 @@ public class BankAccount {
     }
 
     public void transferMoney(BankAccount bankAccount, int money, Bank bank) {
-        if (money > 0 && money <= this.getMoney()) {
-            double commission = money * 0.03;
+        double commission = money * 0.03;
+        if (money > 0 && money + commission <= this.getMoney()) {
             this.setMoney(this.getMoney() - money - (int) commission);
             bankAccount.setMoney(bankAccount.getMoney() + money);
             bank.setMoneyBank(bank.getMoneyBank() + commission);
@@ -142,7 +142,7 @@ public class BankAccount {
         this.addTransaction("transfer", money);
     }
 
-    public void closeCredit(int moneyClose) {
+    public void closeCredit(int moneyClose, Bank bank) {
         double remainder = 0;
 
         if (getCredit() == 0) {
@@ -156,6 +156,7 @@ public class BankAccount {
             setMoney(getMoney() - moneyClose);
             if (moneyClose >= getCredit()) {
                 remainder = moneyClose - getCredit();
+                bank.setMoneyBank(bank.getMoneyBank() + remainder);
                 setCredit(0);
                 setMoney((int) (getMoney() + remainder));
                 System.out.println("You paid off your credit and the remainder has been added to your account");
@@ -171,17 +172,18 @@ public class BankAccount {
         System.out.println(this.getUser() + " your credit is " + this.getCredit() + "$");
     }
 
-    public void getCredit(int valumeCredit) {
+    public void getCredit(int valumeCredit , Bank bank) {
         double addProcent = 0.05;
         double amountCredited = valumeCredit * (1 - addProcent);
         setCredit(getCredit() + valumeCredit);
         setMoney((int) (getMoney() + amountCredited));
+        bank.setMoneyBank(bank.getMoneyBank() - amountCredited); // add minus bank money in moneyBank
         System.out.println(getUser() + " You added a credit of " + valumeCredit + "$ to your account");
         System.out.println(getUser() + " Your new balance is " + getMoney() + "$ and your credit is " + getCredit() + "$");
         this.addTransaction("getCredit", valumeCredit);
     }
 
-    public void createDeposit(int depositBalance) {
+    public void createDeposit(int depositBalance , double dateComback , int yearComback , Bank bank) {
         if (depositBalance < 0) {
             System.out.println("You can't add a negative number");
             return;
@@ -190,6 +192,7 @@ public class BankAccount {
             System.out.println("You don't have enough money");
             return;
         }
+        bank.setMoneyBank(bank.getMoneyBank() + depositBalance);
         setMoney(getMoney() - depositBalance);
         setDepositBalance(getDepositBalance() + depositBalance);
         System.out.println(this.getUser() + " you added " + depositBalance + "$ to your deposit");
@@ -211,6 +214,6 @@ public class BankAccount {
         System.out.println(this.getUser() + " your new balance is " + getMoney() + "$");
         this.addTransaction("User closed deposit early time", 0);
     }
-
+// ipoteka ...
 
 }

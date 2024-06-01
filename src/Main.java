@@ -23,6 +23,7 @@ public class Main {
         // addEarnings8ProcentDepositUser
         // addEarnings5ProcentDepositUser
         // addEarnings10ProcentDepositUser
+        // everyMonthProcentForRemainder
         //
         // Command BankAccount:
         //
@@ -45,7 +46,8 @@ public class Main {
         BankAccount bankAccountDron = bank.createAccount("Dron", 2, 200, 1, 1);
         BankAccount bankAccountIlya = bank.createAccount("Ilya", 3, 300, 1, 1);
         BankAccount bankAccountNikita = bank.createAccount("Nikita", 4, 400, 1, 1);
-        BankAccount bankAccountDanya = bank.createAccount("Danya", 5, 500, 1, 1);
+        BankAccount bankAccountDanya = bank.createAccount("Danya", 5, 0, 1, 1);
+        BankAccount bankAccountSergey = bank.createAccount("Sergey", 6, 0, 1, 1);
         BankAccount bankAccountIgor = bank.createAccount("Igor", 6, 1500, 1, 1);
 
         System.out.println("----------------------------------");
@@ -55,13 +57,13 @@ public class Main {
         System.out.println("----------------------------------");
         bankAccountDron.remainderMoney();
         bank.changeCredit(bankAccountDron, 200);
-        bankAccountDron.closeCredit(200);
+        bankAccountDron.closeCredit(200 , bank);
         bank.printStaticAccount(bankAccountDron);
-        bankAccountDron.getCredit(1000);
+        bankAccountDron.getCredit(1000, bank);
         bank.printStaticAccount(bankAccountDron);
         bankAccountDron.addMoney(200 , bank);
-        bankAccountDron.closeCredit(250);
-        bankAccountDron.closeCredit(200);
+        bankAccountDron.closeCredit(250 , bank);
+        bankAccountDron.closeCredit(200 , bank);
         bankAccountDron.printCredit();
         System.out.println("----------------------------------");
         bank.addBonus(bankAccountIlya, 700);
@@ -79,13 +81,28 @@ public class Main {
         bank.printAllCredits();
         System.out.println("----------------------------------");
         bankAccountNikita.addMoney(100 , bank);
-        bankAccountNikita.createDeposit(500);
+        bankAccountNikita.createDeposit(500 , 03.10, 2025 , bank);
         bank.addEarnings10ProcentDepositUser(bankAccountNikita);
         bankAccountNikita.printDeposit();
         bankAccountNikita.closeDeposit();
         bankAccountNikita.printMyStatic();
         System.out.println("----------------------------------");
         bank.checkMoneyBank();
+        bankAccountAlex.remainderMoney();
+        bankAccountDanya.addMoney(100, bank);
+        bankAccountDanya.withdrawMoney(50, bank);
+        bankAccountDanya.transferMoney(bankAccountAlex, 40, bank);
+        System.out.println("----------------------------------");
+        bankAccountSergey.addMoney(1000, bank);
+        bank.everyMonthProcentForRemainder(bankAccountSergey);
+        bankAccountSergey.remainderMoney();
+        System.out.println("----------------------------------");
+        bank.checkMoneyBank();
+        bankAccountDanya.addMoney(1000, bank);
+        bankAccountDanya.createDeposit(500, 03.10, 2025, bank);
+        bankAccountDanya.printDeposit();
+        bank.checkMoneyBank();
+        System.out.println("----------------------------------");
     }
 
 
